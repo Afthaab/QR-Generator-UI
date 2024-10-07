@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>QR Generator</title>
+</head>
+
+<body>
+  <h2>Hey There!</h2>
+  <div id="banner" style="display: none; padding: 10px; margin: 20px; border: 1px solid; border-radius: 5px;"></div>
+  <div class="container" id="container">
+    <div class="form-container sign-up-container">
+      <form id="teacherSignInForm">
+        <h2>Sign In as a Teacher</h2>
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <a href="#">Forgot your password?</a>
+        <button type="submit">Sign In</button>
+      </form>
+    </div>
+    <div class="form-container sign-in-container">
+      <form id="studentSignInForm">
+        <h2>Sign In as a Student</h2>
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <a href="#">Forgot your password?</a>
+        <button type="submit">Sign In</button>
+      </form>
+    </div>
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h2>Are you a Teacher</h2>
+          <p>Jump into Teacher Sign In Page</p>
+          <button class="ghost" id="signInTeacher">Teacher Sign In</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h2>Are you a Student?</h2>
+          <p>Jump into Student Sign In Page</p>
+          <button class="ghost" id="signInStudent">Student Sign In</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const signUpButton = document.getElementById('signInStudent');
+    const signInButton = document.getElementById('signInTeacher');
+    const container = document.getElementById('container');
+
+    signUpButton.addEventListener('click', () => {
+      container.classList.add("right-panel-active");
+    });
+
+    signInButton.addEventListener('click', () => {
+      container.classList.remove("right-panel-active");
+    });
+
+    // Collect email and password on form submission
+    const teacherSignInForm = document.getElementById('teacherSignInForm');
+    const studentSignInForm = document.getElementById('studentSignInForm');
+
+    teacherSignInForm.addEventListener('submit', async (event) => {
+      event.preventDefault(); // Prevent the default form submission
+
+      const email = teacherSignInForm.querySelector('input[name="email"]').value;
+      const password = teacherSignInForm.querySelector('input[name="password"]').value;
+
+      const credentials = { email, password };
+
+      try {
+        const response = await fetch('http://localhost:8080/teacher/signin', { // Change endpoint as needed
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(credentials),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Success:', data);
+          window.location.href = 'teacher_dashboard.html';
+          // Handle success (e.g., redirect or show a message)
+        } else {
+          const errorData = await response.json();
+          console.error('Error:', errorData);
+          // Handle error response
+          banner.style.display = 'block';
+          banner.style.backgroundColor = '#f8d7da'; // Light red background
+          banner.style.color = '#721c24'; // Dark red text
+          banner.textContent = banner.textContent = `${errorData.error} | Signin failed.`;
+          // Handle error (e.g., show an error message)
+        }
+      } catch (error) {
+        console.error('Fetch error:', error);
+        banner.style.display = 'block';
+        banner.style.backgroundColor = '#f8d7da'; // Light red background
+        banner.style.color = '#721c24'; // Dark red text
+        banner.textContent = banner.textContent = `${error.error} | Signin failed.`;
+        // Handle fetch error (e.g., network issues)
+      }
+    });
+
+    studentSignInForm.addEventListener('submit', async (event) => {
+      event.preventDefault(); // Prevent the default form submission
+
+      const email = studentSignInForm.querySelector('input[name="email"]').value;
+      const password = studentSignInForm.querySelector('input[name="password"]').value;
+
+      const credentials = { email, password };
+
+      try {
+        const response = await fetch('http://localhost:8080/student/signin', { // Change endpoint as needed
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(credentials),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Success:', data);
+          // Handle success (e.g., redirect or show a message)
+        } else {
+          const errorData = await response.json();
+          console.error('Error:', errorData);
+          // Handle error response
+          banner.style.display = 'block';
+          banner.style.backgroundColor = '#f8d7da'; // Light red background
+          banner.style.color = '#721c24'; // Dark red text
+          banner.textContent = banner.textContent = `${errorData.error} | Signin failed.`;
+          // Handle error (e.g., show an error message)
+        }
+      } catch (error) {
+        console.error('Fetch error:', error);
+        banner.style.display = 'block';
+        banner.style.backgroundColor = '#f8d7da'; // Light red background
+        banner.style.color = '#721c24'; // Dark red text
+        banner.textContent = banner.textContent = `${error.error} | Signin failed.`;
+        // Handle fetch error (e.g., network issues)
+      }
+    });
+  </script>
+</body>
+
+</html>

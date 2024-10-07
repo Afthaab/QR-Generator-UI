@@ -1,0 +1,142 @@
+/* General Button Styling */
+button {
+    padding: 15px 5vw;
+    background: #FF416C;
+    border: 0;
+    color: #fff;
+    text-transform: uppercase;
+    font-family: helvetica;
+    font-size: 12px;
+    letter-spacing: 3px;
+    position: relative;
+    transition: all .4s cubic-bezier(0.645, 0.045, 0.355, 1);
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+    width: 90%; /* Adjusts to 90% of the parent container */
+    max-width: 500px; /* Ensures the button does not exceed 500px */
+}
+
+/* Button hover effects */
+button::after, button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: all .4s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+button::after {
+    width: 30px;
+    height: 1px;
+    background: white;
+    transform: translateX(-3px);
+    margin-top: 0px;
+}
+
+button::before {
+    content: "";
+    transform: rotate(-135deg) translateX(50%);
+    width: 11px;
+    height: 11px;
+    background: transparent;
+    border-left: 1px solid white;
+    border-bottom: 1px solid white;
+    margin-top: -1px;
+}
+
+button:hover {
+    padding: 15px 60px 15px 20px;
+}
+
+button:hover::after, button:hover::before {
+    opacity: 1;
+    right: 15px;
+}
+
+/* Base Heading Styling */
+h1 {
+    font-family: "Raleway", sans-serif;
+    font-weight: 300;
+    font-size: 2.5rem;
+    color: #080808;
+    transition: all 0.4s ease 0s;
+}
+
+h1 span {
+    display: block;
+    font-size: 0.5em;
+    line-height: 1.3;
+}
+
+h1 em {
+    font-style: normal;
+    font-weight: 600;
+}
+
+/* Specific Style for Heading Section */
+.four h1 {
+    padding-top: 50px;
+    text-align: center;
+    padding-bottom: 0.7em;
+}
+
+.four h1 span {
+    font-weight: 300;
+    word-spacing: 3px;
+    line-height: 2em;
+    padding-bottom: 0.35em;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.four h1:before {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    height: 1px;
+    content: "";
+    left: 50%;
+    margin-left: -30px;
+    background-color: #777;
+}
+
+/* Media Queries for Responsiveness */
+
+/* Small devices (phones) */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.8rem; /* Decrease the heading size */
+    }
+
+    button {
+        padding: 10px 5vw; /* Smaller padding for smaller devices */
+        font-size: 10px; /* Decrease the font size on buttons */
+    }
+}
+
+/* Medium devices (tablets) */
+@media (min-width: 600px) and (max-width: 1024px) {
+    h1 {
+        font-size: 2.2rem; /* Adjust heading size */
+    }
+
+    button {
+        padding: 15px 5vw;
+        font-size: 12px;
+    }
+}
+
+/* Larger devices (desktops) */
+@media (min-width: 1024px) {
+    h1 {
+        font-size: 3rem; /* Larger heading on desktops */
+    }
+
+    button {
+        padding: 15px 40px;
+        font-size: 14px;
+    }
+}
