@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="student_reg.css">
+</head>
+
+<body>
+    <div class="four">
+        <h1><span>Student Register Page</span> <em>Please fill the below fields</em> </h1>
+    </div>
+    <div>
+        <div class="container">
+            <form action="action_page.php" onsubmit="return validateForm()">
+                <div class="row">
+                    <div class="col-25">
+                        <label for="name">Name</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="name" name="name" placeholder="Enter Name.." pattern="[A-Za-z\s]+"
+                            title="Only alphabets are allowed" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="branch">Branch</label>
+                    </div>
+                    <div class="col-75">
+                        <select id="branch" name="branch">
+                            <option value="bca">BCA</option>
+                            <option value="bba">BBA</option>
+                            <option value="bcom">BCOM</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="batch">Batch</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="batch" name="batch" placeholder="Enter Batch..">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="phone">Phone Number</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="phone" name="phone" placeholder="Enter Phone Number.."
+                            pattern="[0-9]{10}" title="Phone number must be exactly 10 digits" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="Email">Email</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="Email" name="Email" placeholder="Enter Email.." required>
+                    </div>
+                </div>
+                <div class="row">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+        <script>
+            function validateForm() {
+                const name = document.getElementById("name").value;
+                const phone = document.getElementById("phone").value;
+                const email = document.getElementById("Email").value;
+
+                const namePattern = /^[A-Za-z\s]+$/;
+                const phonePattern = /^[0-9]{10}$/;
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;  // Basic email pattern
+
+                if (!namePattern.test(name)) {
+                    alert("Name must contain only alphabets and spaces.");
+                    return false;
+                }
+                if (!phonePattern.test(phone)) {
+                    alert("Phone number must be exactly 10 digits and contain only numbers.");
+                    return false;
+                }
+
+                if (!emailPattern.test(email)) {
+                    alert("Please enter a valid email address.");
+                    return false;
+                }
+
+                return true;  // Allow form submission if all fields are valid
+            }
+        </script>
+
+</body>
+
+</html>
