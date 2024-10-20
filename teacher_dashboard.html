@@ -4,20 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="dashboard_style.css">
+    <link rel="stylesheet" href="teacher_dashboard.css">
     <title>Document</title>
-    
 </head>
- 
+
 <body>
     <div class="four">
-        <h1><span>Welcome to the Dashboard</span>  <em>Choose the below options</em> </h1>
-      </div>
+        <h1><span>Welcome to the Dashboard</span> <em>Choose the below options</em></h1>
+    </div>
+
     <div>
-        <button>Register Student Details</button>
+        <button onclick="registerStudentDetails()">Register Student Details</button>
+        <button onclick="viewAllStudents()">View All Students</button>
         <button>Register Student Attendance</button>
         <button>View Student Attendance</button>
     </div>
+
+    <script>
+        function registerStudentDetails() {
+            window.location.href = "student_reg.html"; // Change to your actual URL
+        }
+
+        function viewAllStudents() {
+            window.location.href = "view_all_student.html"; // Change to your actual URL for viewing all students
+        }
+    </script>
 
 </body>
 

@@ -1,0 +1,55 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+    <link rel="stylesheet" href="view_student.css"> <!-- Optional CSS file for styling -->
+</head>
+<body>
+    <div class="container">
+        <h1>Student Details</h1>
+        <div id="studentDetails">
+            <!-- Student details will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        // Function to extract query parameters from the URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Function to fetch and display the student's details
+        async function fetchStudentDetails(studentId) {
+            try {
+                const response = await fetch(`http://localhost:8080/student/view/${studentId}`);
+                const data = await response.json();
+                const student = data["student detail"]; // Extract student details
+                
+                // Display the student details
+                const studentDetailsDiv = document.getElementById('studentDetails');
+                studentDetailsDiv.innerHTML = `
+                    <p><strong>ID:</strong> ${student.id}</p>
+                    <p><strong>Name:</strong> ${student.name}</p>
+                    <p><strong>Branch:</strong> ${student.Branch}</p>
+                    <p><strong>Batch:</strong> ${student.Batch}</p>
+                    <p><strong>Phone Number:</strong> ${student.Phoneno}</p>
+                    <p><strong>Email:</strong> ${student.Email}</p>
+                `;
+            } catch (error) {
+                console.error('Error fetching student details:', error);
+            }
+        }
+
+        // Extract the studentId from the URL and call the function
+        const studentId = getQueryParam('studentId');
+        if (studentId) {
+            fetchStudentDetails(studentId);
+        } else {
+            console.error('No student ID found in URL');
+        }
+    </script>
+</body>
+</html>

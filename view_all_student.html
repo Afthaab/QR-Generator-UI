@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Registered Students</title>
+    <link rel="stylesheet" href="view_all_student.css">
+</head>
+<body>
+    <div class="container">
+        <div class="four">
+            <h1><span>Select view to see the student details</span> <em>All Registered Students</em></h1>
+        </div>
+        <ul class="responsive-table" id="studentTable">
+            <li class="table-header">
+                <div class="col col-1">S. No.</div>
+                <div class="col col-2">Student Name</div>
+                <div class="col col-3">Branch</div>
+                <div class="col col-4">Batch</div>
+                <div class="col col-5">View</div>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        // Function to fetch student details from API
+        async function fetchStudentDetails() {
+            try {
+                const response = await fetch('http://localhost:8080/student/view/all');
+                const data = await response.json();
+                const students = data["student details"];
+                populateTable(students);
+            } catch (error) {
+                console.error('Error fetching student data:', error);
+            }
+        }
+
+        // Function to populate the table with student data
+        function populateTable(students) {
+            const table = document.getElementById('studentTable');
+            students.forEach((student, index) => {
+                const row = document.createElement('li');
+                row.classList.add('table-row');
+                
+                // Insert incrementing number for each student
+                row.innerHTML = `
+                    <div class="col col-1" data-label="S. No.">${index + 1}</div>
+                    <div class="col col-2" data-label="Student Name">${student.name}</div>
+                    <div class="col col-3" data-label="Branch">${student.Branch}</div>
+                    <div class="col col-4" data-label="Batch">${student.Batch}</div>
+                    <div class="col col-5" data-label="View">
+                        <button class="view-button" onclick="viewStudent('${student.id}')">View</button>
+                    </div>
+                `;
+                table.appendChild(row);
+            });
+        }
+
+        // Function to view a student's details by redirecting to another page
+    function viewStudent(studentId) {
+        // Redirect to a new page, passing the student ID as a query parameter
+        window.location.href = `view_student.html?studentId=${studentId}`;
+    }
+
+        // Call the function when the page loads
+        window.onload = fetchStudentDetails;
+    </script>
+</body>
+</html>
