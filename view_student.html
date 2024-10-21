@@ -1,16 +1,48 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Details</title>
-    <link rel="stylesheet" href="view_student.css"> <!-- Optional CSS file for styling -->
+    <link rel="stylesheet" href="view_student.css"> <!-- External CSS -->
 </head>
 <body>
     <div class="container">
         <h1>Student Details</h1>
-        <div id="studentDetails">
-            <!-- Student details will be displayed here -->
+        <!-- Table for displaying student details -->
+        <table id="studentDetailsTable">
+            <tbody>
+                <tr>
+                    <th>ID</th>
+                    <td id="studentId"></td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td id="studentName"></td>
+                </tr>
+                <tr>
+                    <th>Branch</th>
+                    <td id="studentBranch"></td>
+                </tr>
+                <tr>
+                    <th>Batch</th>
+                    <td id="studentBatch"></td>
+                </tr>
+                <tr>
+                    <th>Phone Number</th>
+                    <td id="studentPhone"></td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td id="studentEmail"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- QR Code Section -->
+        <div class="qr-section">
+            <h3>QR Code</h3>
+            <img id="qrCodeImage" alt="QR Code" />
         </div>
     </div>
 
@@ -27,17 +59,19 @@
                 const response = await fetch(`http://localhost:8080/student/view/${studentId}`);
                 const data = await response.json();
                 const student = data["student detail"]; // Extract student details
-                
-                // Display the student details
-                const studentDetailsDiv = document.getElementById('studentDetails');
-                studentDetailsDiv.innerHTML = `
-                    <p><strong>ID:</strong> ${student.id}</p>
-                    <p><strong>Name:</strong> ${student.name}</p>
-                    <p><strong>Branch:</strong> ${student.Branch}</p>
-                    <p><strong>Batch:</strong> ${student.Batch}</p>
-                    <p><strong>Phone Number:</strong> ${student.Phoneno}</p>
-                    <p><strong>Email:</strong> ${student.Email}</p>
-                `;
+
+                // Insert the student details into the table
+                document.getElementById('studentId').textContent = student.id;
+                document.getElementById('studentName').textContent = student.name;
+                document.getElementById('studentBranch').textContent = student.Branch;
+                document.getElementById('studentBatch').textContent = student.Batch;
+                document.getElementById('studentPhone').textContent = student.Phoneno;
+                document.getElementById('studentEmail').textContent = student.Email;
+
+                // Display the QR Code image
+                const qrCodeImage = document.getElementById('qrCodeImage');
+                qrCodeImage.src = `QR_Codes/${studentId}.png`;
+                qrCodeImage.alt = `QR Code for ${student.name}`;
             } catch (error) {
                 console.error('Error fetching student details:', error);
             }
