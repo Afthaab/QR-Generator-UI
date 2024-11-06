@@ -41,7 +41,7 @@
                         <label for="batch">Batch</label>
                     </div>
                     <div class="col-75">
-                        <input type="text" id="batch" name="batch" placeholder="Enter Batch..">
+                        <input type="text" id="batch" name="batch" placeholder="Enter Batch.." required>
                     </div>
                 </div>
                 <div class="row">
@@ -67,40 +67,23 @@
             </form>
         </div>
 
+        <div id="loader" class="loader-overlay" style="display: none;">
+            <div class="loader"></div>
+        </div>
+
+
         <script>
             async function handleSubmit(event) {
-                event.preventDefault();  // Prevent form submission from reloading the page
+                event.preventDefault(); // Prevent form submission from reloading the page
+
+                // Show loader
+                document.getElementById("loader").style.display = "flex";
 
                 const name = document.getElementById("name").value;
                 const phoneno = document.getElementById("phone").value;
                 const email = document.getElementById("email").value;
                 const batch = document.getElementById("batch").value;
                 const branch = document.getElementById("branch").value;
-
-                // Log the form data to the console
-                console.log("Name:", name);
-                console.log("Phone:", phoneno);
-                console.log("Email:", email);
-                console.log("Batch:", batch);
-                console.log("Branch:", branch);
-
-                // Form validation logic
-                const namePattern = /^[A-Za-z\s]+$/;
-                const phonePattern = /^[0-9]{10}$/;
-                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-                if (!namePattern.test(name)) {
-                    alert("Name must contain only alphabets and spaces.");
-                    return false;
-                }
-                if (!phonePattern.test(phoneno)) {
-                    alert("Phone number must be exactly 10 digits.");
-                    return false;
-                }
-                if (!emailPattern.test(email)) {
-                    alert("Please enter a valid email address.");
-                    return false;
-                }
 
                 // Prepare the data to be sent to the API
                 const data = {
@@ -111,16 +94,17 @@
                     phoneno: phoneno
                 };
 
-                // Send data to the API using fetch
                 try {
-                    const response = await fetch("http://localhost:8080/teacher/student/register", {  // Replace with your actual API URL
+                    const response = await fetch("http://localhost:8080/teacher/student/register", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify(data)
                     });
-                    console.log(response)
+
+                    // Hide loader after receiving the response
+                    document.getElementById("loader").style.display = "none";
 
                     // Handle the API response
                     if (response.ok) {
@@ -128,16 +112,20 @@
                         console.log("Success:", result);
                         alert("Form submitted successfully!");
                     } else {
-                        console.error("Error submitting form:", response.statusText);
-                        alert("Error submitting form. Please try again.");
+                        const errorData = await response.json();
+                        console.error("Error submitting form:", errorData.error);
+                        alert("Error: " + errorData.error);
                     }
                 } catch (error) {
+                    // Hide loader if there was a network error
+                    document.getElementById("loader").style.display = "none";
                     console.error("Network error:", error);
                     alert("Network error. Please try again later.");
                 }
 
-                return false;  // Prevent form submission to the PHP page
+                return false; // Prevent form submission to the PHP page
             }
+
         </script>
 
 </body>

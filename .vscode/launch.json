@@ -5,10 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "chrome",
+            "name": "Launch Package",
+            "type": "go",
             "request": "launch",
-            "name": "Open student_reg.html",
-            "file": "c:\\Users\\moham\\Desktop\\Workspace\\QR_Generator\\QR-Generator-Backend\\templates\\student_reg.html"
+            "mode": "auto",
+            "program": "${workspaceFolder}\\main.go"
         }
     ]
 }
