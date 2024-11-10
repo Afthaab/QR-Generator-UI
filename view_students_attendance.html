@@ -1,15 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="view_students_attendance.css">
-    <title>Document</title>
+    <title>Dashboard</title>
 </head>
+
 <body>
     <div class="four">
         <h1><span>Welcome to the Dashboard</span> <em>Choose the below options</em></h1>
     </div>
-    
+
+    <!-- Date Picker and View Button -->
+    <div class="date-picker-container">
+        <input type="date" id="datePicker" required>
+        <button onclick="viewAttendance()">View</button>
+    </div>
+
+    <!-- Error message container -->
+    <div id="error-message" class="error-message"></div>
+
+    <!-- Table for displaying attendees -->
+    <div id="table-container" class="table-container"></div>
+
+    <script>
+        function viewAttendance() {
+            // Clear any previous error messages
+            const errorMessageElement = document.getElementById("error-message");
+            errorMessageElement.textContent = "";
+
+            // Clear previous table content before making a new search
+            const tableContainer = document.getElementById("table-container");
+            tableContainer.innerHTML = "";
+
+            // Get the selected date from the date picker
+            const datePicker = document.getElementById("datePicker");
+            const selectedDate = new Date(datePicker.value);
+
+            if (isNaN(selectedDate)) {
+                alert("Please select a valid date.");
+                return;
+            }
+
+            // Format the date as DAY-MONTH-YEAR
+            const day = String(selectedDate.getDate()).padStart(2, '0');
+            const month = String(selectedDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+            const year = selectedDate.getFullYear();
+            const formattedDate = `${day}-${month}-${year}`;
+
+            // Construct the API URL with the formatted date in the path
+            const apiUrl = `http://localhost:8080/view/all/attendance/${formattedDate}`;
+
+            // Send the GET request to the API
+            fetch(apiUrl, {
+                method: "GET"
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        // If there is an error, extract the error message from the response
+                        return response.json().then(errorData => {
+                            throw new Error(errorData.message || "An error occurred");
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Display the new data in the table
+                    displayTable(data.attendees);
+                })
+                .catch(error => {
+                    // Display error message on the page
+                    errorMessageElement.textContent = error.message;
+                    console.error("Error fetching attendance data:", error);
+                });
+        }
+
+        function displayTable(attendees) {
+            const container = document.getElementById("table-container");
+
+            // Create table element
+            const table = document.createElement("table");
+
+            // Create table header
+            const header = table.createTHead();
+            const headerRow = header.insertRow();
+            const th1 = document.createElement("th");
+            th1.textContent = "No";
+            const th2 = document.createElement("th");
+            th2.textContent = "Attendee Name";
+            headerRow.appendChild(th1);
+            headerRow.appendChild(th2);
+
+            // Create table body
+            const tbody = table.createTBody();
+            attendees.forEach((attendee, index) => {
+                const row = tbody.insertRow();
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                cell1.textContent = index + 1; // Numbering starts at 1
+                cell2.textContent = attendee;
+            });
+
+            // Append table to container
+            container.appendChild(table);
+        }
+
+    </script>
 </body>
+
 </html>

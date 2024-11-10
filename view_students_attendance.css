@@ -1,61 +1,3 @@
-/* General Button Styling */
-button {
-    padding: 15px 5vw;
-    background: #FF416C;
-    border: 0;
-    color: #fff;
-    text-transform: uppercase;
-    font-family: helvetica;
-    font-size: 12px;
-    letter-spacing: 3px;
-    position: relative;
-    transition: all .4s cubic-bezier(0.645, 0.045, 0.355, 1);
-    cursor: pointer;
-    display: block;
-    margin: 20px auto;
-    width: 90%; /* Adjusts to 90% of the parent container */
-    max-width: 500px; /* Ensures the button does not exceed 500px */
-}
-
-/* Button hover effects */
-button::after, button::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: 0px;
-    transform: translateY(-50%);
-    opacity: 0;
-    transition: all .4s cubic-bezier(0.645, 0.045, 0.355, 1);
-}
-
-button::after {
-    width: 30px;
-    height: 1px;
-    background: white;
-    transform: translateX(-3px);
-    margin-top: 0px;
-}
-
-button::before {
-    content: "";
-    transform: rotate(-135deg) translateX(50%);
-    width: 11px;
-    height: 11px;
-    background: transparent;
-    border-left: 1px solid white;
-    border-bottom: 1px solid white;
-    margin-top: -1px;
-}
-
-button:hover {
-    padding: 15px 60px 15px 20px;
-}
-
-button:hover::after, button:hover::before {
-    opacity: 1;
-    right: 15px;
-}
-
 /* Base Heading Styling */
 h1 {
     font-family: "Raleway", sans-serif;
@@ -77,9 +19,12 @@ h1 em {
 }
 
 /* Specific Style for Heading Section */
-.four h1 {
+.four {
     padding-top: 50px;
     text-align: center;
+}
+
+.four h1 {
     padding-bottom: 0.7em;
 }
 
@@ -101,4 +46,134 @@ h1 em {
     left: 50%;
     margin-left: -30px;
     background-color: #777;
+}
+
+/* Date Picker and Button Container */
+.date-picker-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#datePicker {
+    padding: 10px;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 20px;
+    background: #FF416C;
+    border: none;
+    color: #fff;
+    font-family: helvetica, sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background: #FF6378;
+}
+
+/* Container for the table */
+.table-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+table {
+    width: 90%;
+    max-width: 500px;
+    border-collapse: collapse;
+    margin: 20px auto;
+    font-family: "Helvetica", sans-serif;
+}
+
+/* Table header styling */
+table th {
+    background-color: #100f0f;
+    color: #fff;
+    padding: 10px;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Table row styling */
+table td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+/* Error message styling */
+.error-message {
+    color: #FF416C;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+    h1 span {
+        font-size: 0.45em;
+    }
+    #datePicker,
+    button {
+        width: 100%;
+        font-size: 14px;
+        padding: 10px;
+    }
+    .date-picker-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    table {
+        width: 95%;
+    }
+    table th, table td {
+        padding: 8px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+    h1 span {
+        font-size: 0.4em;
+    }
+    .date-picker-container {
+        gap: 10px;
+    }
+    #datePicker,
+    button {
+        font-size: 12px;
+        padding: 8px;
+    }
+    table {
+        width: 100%;
+        font-size: 12px;
+    }
+    table th, table td {
+        padding: 6px;
+    }
 }
