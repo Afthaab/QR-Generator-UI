@@ -17,7 +17,7 @@
         <button onclick="registerStudentDetails()">Register Student Details</button>
         <button onclick="viewAllStudents()">View All Students</button>
         <button>Register Student Attendance</button>
-        <button>View Student Attendance</button>
+        <button onclick="viewAllStudentsAttendance()">View Student Attendance</button>
     </div>
 
     <script>
@@ -27,6 +27,10 @@
 
         function viewAllStudents() {
             window.location.href = "view_all_student.html"; // Change to your actual URL for viewing all students
+        }
+
+        function viewAllStudentsAttendance(){
+            window.location.href = "view_students_attendance.html";
         }
     </script>
 
