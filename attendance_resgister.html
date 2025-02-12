@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./node_modules/html5-qrcode/html5-qrcode.min.js"></script>
+    <link rel="stylesheet" href="attendance_register.css">
+</head>
+
+<body>
+    <div class="four">
+        <h1><span>Register Attendance</span> <em>Scan the QR Code below</em></h1>
+    </div>
+    <main>
+        <div id="reader"></div>
+        <div id="result"></div>
+    </main>
+
+    <script>
+        const scanner = new Html5QrcodeScanner('reader', {
+            qrbox: {
+                width: 250,
+                height: 250,
+            },
+            fps: 20,
+        });
+    
+        scanner.render(success, error);
+    
+        async function success(result) {
+            console.log("Scanned QR Code:", result); // Log the scanned result
+    
+            try {
+                const response = await fetch('http://localhost:8080/register/attendance', { // Replace with your actual API URL
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: result }) // Sending scanned result in JSON format
+                });
+    
+                const responseData = await response.json(); // Parse the JSON response
+    
+                if (!response.ok) {
+                    throw new Error(responseData.message || `HTTP error! Status: ${response.status}`);
+                }
+    
+                console.log("API Response:", responseData);
+                alert("Form submitted successfully!");
+    
+            } catch (error) {
+                console.error("Error sending data to API:", error);
+                alert(error.message); // Show error message from the API response
+            }
+        }
+    
+        function error(err) {
+            console.error(err);
+        }
+    </script>    
+
+</body>
+
+</html>
