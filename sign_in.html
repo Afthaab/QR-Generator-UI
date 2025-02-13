@@ -114,7 +114,7 @@
       const credentials = { email, password };
 
       try {
-        const response = await fetch('http://localhost:8080/student/sign/in', { // Change endpoint as needed
+        const response = await fetch('http://localhost:8080/student/sign/in', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -125,28 +125,28 @@
         if (response.ok) {
           const data = await response.json();
           console.log('Success:', data);
-          const student = data.student;
-          const studentId = encodeURIComponent(student.id); // Ensure the ID is safely encoded for URL
-          window.location.href = `view_student.html?studentId=${studentId}`;
-          // Handle success (e.g., redirect or show a message)
+
+          // Store the token in a cookie (Expires in 1 day)
+          document.cookie = `token=${data.token}; path=/; max-age=${60 * 60 * 24}; secure`;
+
+          // Redirect after setting the cookie
+          window.location.href = "view_student.html";
         } else {
           const errorData = await response.json();
           console.error('Error:', errorData);
-          // Handle error response
           banner.style.display = 'block';
-          banner.style.backgroundColor = '#f8d7da'; // Light red background
-          banner.style.color = '#721c24'; // Dark red text
-          banner.textContent = banner.textContent = `${errorData.error} | Signin failed.`;
-          // Handle error (e.g., show an error message)
+          banner.style.backgroundColor = '#f8d7da';
+          banner.style.color = '#721c24';
+          banner.textContent = `${errorData.error} | Sign-in failed.`;
         }
       } catch (error) {
         console.error('Fetch error:', error);
         banner.style.display = 'block';
-        banner.style.backgroundColor = '#f8d7da'; // Light red background
-        banner.style.color = '#721c24'; // Dark red text
-        banner.textContent = banner.textContent = `${error.error} | Signin failed.`;
-        // Handle fetch error (e.g., network issues)
+        banner.style.backgroundColor = '#f8d7da';
+        banner.style.color = '#721c24';
+        banner.textContent = `Network error | Sign-in failed.`;
       }
+
     });
   </script>
 </body>
