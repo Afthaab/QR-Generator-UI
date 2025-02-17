@@ -83,6 +83,10 @@
         if (response.ok) {
           const data = await response.json();
           console.log('Success:', data);
+
+           // Store the token in a cookie (Expires in 1 day)
+          document.cookie = `token=${data.token}; path=/; max-age=${60 * 60 * 24}; secure`;
+
           window.location.href = 'teacher_dashboard.html';
           // Handle success (e.g., redirect or show a message)
         } else {

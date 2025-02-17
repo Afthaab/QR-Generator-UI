@@ -1,0 +1,7 @@
+sign in - token generated
+
+student view page - secured
+
+teachers dashboard - secured
+
+student register - secured

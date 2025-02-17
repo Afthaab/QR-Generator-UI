@@ -21,6 +21,29 @@
     </div>
 
     <script>
+
+        function getCookie(name) {
+            const cookies = document.cookie.split('; ');
+            for (let i = 0; i < cookies.length; i++) {
+                const [cookieName, cookieValue] = cookies[i].split('=');
+                if (cookieName === name) {
+                    return cookieValue;
+                }
+            }
+            return null;
+        }
+
+        // Function to check authentication
+        function checkAuth() {
+            const token = getCookie('token'); // Ensure this matches your backend's cookie name
+
+            if (!token) {
+                // Redirect to login page if token is missing
+                window.location.href = "sign_in.html";
+                return;
+            }
+        }
+
         function registerStudentDetails() {
             window.location.href = "student_reg.html"; // Change to your actual URL
         }
@@ -29,13 +52,18 @@
             window.location.href = "view_all_student.html"; // Change to your actual URL for viewing all students
         }
 
-        function viewAllStudentsAttendance(){
+        function viewAllStudentsAttendance() {
             window.location.href = "view_students_attendance.html";
         }
 
-        function RegisterAttendance(){
+        function RegisterAttendance() {
             window.location.href = "attendance_resgister.html";
         }
+
+        // Check authentication when the page loads
+        document.addEventListener("DOMContentLoaded", checkAuth);
+
+
     </script>
 
 </body>
