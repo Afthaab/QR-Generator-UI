@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Registered Students</title>
     <link rel="stylesheet" href="view_all_student.css">
 </head>
+
 <body>
     <div class="container">
         <div class="four">
@@ -23,10 +25,44 @@
     </div>
 
     <script>
+
+        let token = null; // Declare token as a global variable
+
+        // Function to get a cookie value by name
+        function getCookie(name) {
+            const cookies = document.cookie.split('; ');
+            for (let i = 0; i < cookies.length; i++) {
+                const [cookieName, cookieValue] = cookies[i].split('=');
+                if (cookieName === name) {
+                    return cookieValue;
+                }
+            }
+            return null;
+        }
+
+        // Function to check authentication
+        function checkAuth() {
+            token = getCookie('token'); // Ensure this matches your backend's cookie name
+
+            if (!token) {
+                // Redirect to login page if token is missing
+
+                window.location.href = "sign_in.html";
+            } else {
+                // Fetch student details if authenticated
+                fetchStudentDetails();
+            }
+        }
         // Function to fetch student details from API
         async function fetchStudentDetails() {
             try {
-                const response = await fetch('http://localhost:8080/student/view/all');
+                const response = await fetch('http://localhost:8080/student/view/all', {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                });
                 const data = await response.json();
                 const students = data["student details"];
                 populateTable(students);
@@ -41,7 +77,7 @@
             students.forEach((student, index) => {
                 const row = document.createElement('li');
                 row.classList.add('table-row');
-                
+
                 // Insert incrementing number for each student
                 row.innerHTML = `
                     <div class="col col-1" data-label="S. No.">${index + 1}</div>
@@ -57,13 +93,17 @@
         }
 
         // Function to view a student's details by redirecting to another page
-    function viewStudent(studentId) {
-        // Redirect to a new page, passing the student ID as a query parameter
-        window.location.href = `view_student.html?studentId=${studentId}`;
-    }
+        function viewStudent(studentId) {
+            // Redirect to a new page, passing the student ID as a query parameter
+            window.location.href = `view_student_profile.html?studentId=${studentId}`;
+        }
 
         // Call the function when the page loads
         window.onload = fetchStudentDetails;
+
+        // Check authentication when the page loads
+        document.addEventListener("DOMContentLoaded", checkAuth);
     </script>
 </body>
+
 </html>
