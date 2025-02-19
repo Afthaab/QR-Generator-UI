@@ -89,8 +89,7 @@
 
             // Function to check authentication
             function checkAuth() {
-                token = getCookie('token'); // ✅ Assign to global token
-
+                token = getCookie('token'); 
                 if (!token) {
                     console.warn("No token found. Redirecting to login...");
                     window.location.href = "sign_in.html";

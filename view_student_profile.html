@@ -64,42 +64,40 @@
     </div>
 
     <script>
-        // Function to extract query parameters from the URL
-        function getQueryParam(param) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(param);
-        }
-
-        let token = null; // Declare token as a global variable
 
         // Function to get a cookie value by name
         function getCookie(name) {
             const cookies = document.cookie.split('; ');
             for (let i = 0; i < cookies.length; i++) {
                 const [cookieName, cookieValue] = cookies[i].split('=');
-                if (cookieName === name) {
-                    return cookieValue;
+                if (cookieName.trim() === name) {
+                    return decodeURIComponent(cookieValue);
                 }
             }
             return null;
         }
 
-        // Function to check authentication
+        // Function to check authentication and return the token
         function checkAuth() {
-            token = getCookie('token'); // Ensure this matches your backend's cookie name
-
+            const token = getCookie('token');
             if (!token) {
-                // Redirect to login page if token is missing
-
+                console.warn("No token found. Redirecting to login...");
                 window.location.href = "sign_in.html";
-                return;
+                return null;
             }
+            return token;  // Return the token
+        }
+
+        // Function to extract query parameters from the URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
         }
 
         // Function to fetch and display the student's details
-        async function fetchStudentDetails(studentId) {
+        async function fetchStudentDetails(studentId, token) {
             try {
-                const response = await fetch(`http://localhost:8080/student/view/${studentId}`,{
+                const response = await fetch(`http://localhost:8080/student/view/${studentId}`, {
                     method: "GET",
                     headers: {
                         "Authorization": `Bearer ${token}`,
@@ -150,15 +148,19 @@
         }
 
         // Check authentication when the page loads
-        document.addEventListener("DOMContentLoaded", checkAuth);
+        document.addEventListener("DOMContentLoaded", function () {
+            const token = checkAuth();  // Get token from checkAuth
+            if (token) {
+                // Extract the studentId from the URL and call the function
+                const studentId = getQueryParam('studentId');
+                if (studentId) {
+                    fetchStudentDetails(studentId, token);  // Pass token as argument
+                } else {
+                    console.error('No student ID found in URL');
+                }
+            }
+        });
 
-        // Extract the studentId from the URL and call the function
-        const studentId = getQueryParam('studentId');
-        if (studentId) {
-            fetchStudentDetails(studentId);
-        } else {
-            console.error('No student ID found in URL');
-        }
     </script>
 </body>
 

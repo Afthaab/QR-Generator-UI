@@ -19,6 +19,35 @@
     </main>
 
     <script>
+
+        let token = null; // Declare token as a global variable
+
+        // Function to get a cookie value by name
+        function getCookie(name) {
+            const cookies = document.cookie.split('; ');
+            for (let i = 0; i < cookies.length; i++) {
+                const [cookieName, cookieValue] = cookies[i].split('=');
+                if (cookieName.trim() === name) {
+                    return decodeURIComponent(cookieValue);
+                }
+            }
+            return null;
+        }
+
+        // Function to check authentication and return the token
+        function checkAuth() {
+            token = getCookie('token');
+            if (!token) {
+                console.warn("No token found. Redirecting to login...");
+                window.location.href = "sign_in.html";
+                return null;
+            }
+            return token;  // Return the token
+        }
+
+        // Check authentication when the page loads
+        document.addEventListener("DOMContentLoaded", checkAuth);
+
         const scanner = new Html5QrcodeScanner('reader', {
             qrbox: {
                 width: 250,
@@ -26,40 +55,41 @@
             },
             fps: 20,
         });
-    
+
         scanner.render(success, error);
-    
+
         async function success(result) {
             console.log("Scanned QR Code:", result); // Log the scanned result
-    
+
             try {
                 const response = await fetch('http://localhost:8080/register/attendance', { // Replace with your actual API URL
                     method: 'POST',
                     headers: {
+                        "Authorization": `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ id: result }) // Sending scanned result in JSON format
                 });
-    
+
                 const responseData = await response.json(); // Parse the JSON response
-    
+
                 if (!response.ok) {
                     throw new Error(responseData.message || `HTTP error! Status: ${response.status}`);
                 }
-    
+
                 console.log("API Response:", responseData);
                 alert("Form submitted successfully!");
-    
+
             } catch (error) {
                 console.error("Error sending data to API:", error);
                 alert(error.message); // Show error message from the API response
             }
         }
-    
+
         function error(err) {
             console.error(err);
         }
-    </script>    
+    </script>
 
 </body>
 
