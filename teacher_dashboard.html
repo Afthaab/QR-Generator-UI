@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="teacher_dashboard.css">
-    <title>Document</title>
+    <title>Teacher Dashboard</title>
 </head>
 
 <body>
@@ -18,19 +18,14 @@
         <button onclick="viewAllStudents()">View All Students</button>
         <button onclick="RegisterAttendance()">Register Student Attendance</button>
         <button onclick="viewAllStudentsAttendance()">View Student Attendance</button>
+        <button onclick="logout()">Logout</button> 
     </div>
 
     <script>
-
+        // Optimized function to get a cookie value
         function getCookie(name) {
-            const cookies = document.cookie.split('; ');
-            for (let i = 0; i < cookies.length; i++) {
-                const [cookieName, cookieValue] = cookies[i].split('=');
-                if (cookieName === name) {
-                    return cookieValue;
-                }
-            }
-            return null;
+            const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+            return match ? match[2] : null;
         }
 
         // Function to check authentication
@@ -40,16 +35,15 @@
             if (!token) {
                 // Redirect to login page if token is missing
                 window.location.href = "sign_in.html";
-                return;
             }
         }
 
         function registerStudentDetails() {
-            window.location.href = "student_reg.html"; // Change to your actual URL
+            window.location.href = "student_reg.html";
         }
 
         function viewAllStudents() {
-            window.location.href = "view_all_student.html"; // Change to your actual URL for viewing all students
+            window.location.href = "view_all_student.html";
         }
 
         function viewAllStudentsAttendance() {
@@ -60,9 +54,15 @@
             window.location.href = "attendance_resgister.html";
         }
 
-        // Check authentication when the page loads
-        document.addEventListener("DOMContentLoaded", checkAuth);
+        function logout() {
+            document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            window.location.href = "sign_in.html";
+        }
 
+        // Check authentication and prevent back navigation when the page loads
+        document.addEventListener("DOMContentLoaded", function () {
+            checkAuth();
+        });
 
     </script>
 

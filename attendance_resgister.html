@@ -19,6 +19,13 @@
     </main>
 
     <script>
+        const scanner = new Html5QrcodeScanner('reader', {
+            qrbox: {
+                width: 250,
+                height: 250,
+            },
+            fps: 20,
+        });
 
         let token = null; // Declare token as a global variable
 
@@ -34,28 +41,17 @@
             return null;
         }
 
-        // Function to check authentication and return the token
+        // Function to check authentication
         function checkAuth() {
-            token = getCookie('token');
+            token = getCookie('token'); // ✅ Assign to global token
+
             if (!token) {
                 console.warn("No token found. Redirecting to login...");
                 window.location.href = "sign_in.html";
-                return null;
+                return;
             }
-            return token;  // Return the token
         }
-
-        // Check authentication when the page loads
-        document.addEventListener("DOMContentLoaded", checkAuth);
-
-        const scanner = new Html5QrcodeScanner('reader', {
-            qrbox: {
-                width: 250,
-                height: 250,
-            },
-            fps: 20,
-        });
-
+    
         scanner.render(success, error);
 
         async function success(result) {
@@ -66,7 +62,7 @@
                     method: 'POST',
                     headers: {
                         "Authorization": `Bearer ${token}`,
-                        'Content-Type': 'application/json'
+                        "Content-Type": "application/json"
                     },
                     body: JSON.stringify({ id: result }) // Sending scanned result in JSON format
                 });
@@ -86,6 +82,9 @@
             }
         }
 
+        // Check authentication when the page loads
+        document.addEventListener("DOMContentLoaded", checkAuth);
+    
         function error(err) {
             console.error(err);
         }

@@ -26,6 +26,32 @@
     <div id="table-container" class="table-container"></div>
 
     <script>
+
+        let token = null; // Declare token as a global variable
+
+        // Function to get a cookie value by name
+        function getCookie(name) {
+            const cookies = document.cookie.split('; ');
+            for (let i = 0; i < cookies.length; i++) {
+                const [cookieName, cookieValue] = cookies[i].split('=');
+                if (cookieName.trim() === name) {
+                    return decodeURIComponent(cookieValue);
+                }
+            }
+            return null;
+        }
+
+        // Function to check authentication
+        function checkAuth() {
+            token = getCookie('token'); // ✅ Assign to global token
+
+            if (!token) {
+                console.warn("No token found. Redirecting to login...");
+                window.location.href = "sign_in.html";
+                return;
+            }
+        }
+
         function viewAttendance() {
             // Clear any previous error messages
             const errorMessageElement = document.getElementById("error-message");
@@ -55,7 +81,11 @@
 
             // Send the GET request to the API
             fetch(apiUrl, {
-                method: "GET"
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
             })
                 .then(response => {
                     if (!response.ok) {
@@ -106,6 +136,9 @@
             // Append table to container
             container.appendChild(table);
         }
+
+        // Check authentication when the page loads
+        document.addEventListener("DOMContentLoaded", checkAuth);
 
     </script>
 </body>

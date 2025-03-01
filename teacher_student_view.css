@@ -15,30 +15,6 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Logout Button Styling */
-.logout-btn {
-    background: transparent;
-    border: 2px solid #FF416C;
-    color: #FF416C;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 12px 30px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-}
-
-/* Hover Effect */
-.logout-btn:hover {
-    background: #FF416C;
-    color: #fff;
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(255, 65, 108, 0.4);
-}
-
 h1 {
     text-align: center;
     color: #333;
@@ -145,6 +121,3 @@ tr:hover {
         max-width: 100px;
     }
 }
-
-
-
